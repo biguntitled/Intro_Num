@@ -54,7 +54,7 @@ class HouseholdSpecializationModelClass:
 
         # b. home production
         if par.sigma == 0:
-            H = min(HM, HF, 0)
+            H = min(HM, HF)
         elif par.sigma == 1:
             H = HM**(1-par.alpha)*HF**par.alpha 
         else: 
