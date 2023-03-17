@@ -4,6 +4,8 @@ from scipy import optimize
 import pandas as pd 
 import matplotlib.pyplot as plt
 
+
+
 class HouseholdSpecializationModelClass:
 
     def __init__(self):
@@ -51,14 +53,14 @@ class HouseholdSpecializationModelClass:
         C = par.wM*LM + par.wF*LF
 
         # b. home production
-        if np.isclose([par.sigma,0]):
+        if np.isclose(par.sigma,0):
             H = min(HF, HM)
-        elif np.isclose([par.sigma,1]): 
+        elif np.isclose(par.sigma,1): 
             H = HM**(1-par.alpha)*HF**par.alpha
         else:
             power1 = (par.sigma-1)/par.sigma
             power2 = par.sigma/(par.sigma-1)
-            H = (((1-par.alpha)*HM**(power1))+par.alpha*HF**(power1))**(power2)
+            H = ((1-par.alpha)*HM**(power1)+par.alpha*HF**(power1))**(power2)
 
 
         # c. total consumption utility
@@ -113,13 +115,25 @@ class HouseholdSpecializationModelClass:
 
     def solve(self,do_print=False):
         """ solve model continously """
-
+        
         pass    
 
     def solve_wF_vec(self,discrete=False):
         """ solve model for vector of female wages """
+        if discrete == True: 
+            wF = self.par.wF_vec
+            it = len(wF)
+            Home_ratios = np.zeros(it)
 
-        pass
+            for it, val in enumerate(wF): 
+                self.par.wF = val
+                opt = self.solve_discrete()
+                Home_ratios[it] = opt.HF / opt.HM
+            
+            return Home_ratios
+        else: 
+            pass
+    
 
     def run_regression(self):
         """ run regression """
