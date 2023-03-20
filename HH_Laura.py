@@ -5,6 +5,7 @@ from scipy import optimize
 import ipywidgets as widgets
 import pandas as pd 
 import matplotlib.pyplot as plt
+from scipy.optimize import minimize
 
 class HouseholdSpecializationModelClass:
 
@@ -115,7 +116,27 @@ class HouseholdSpecializationModelClass:
     def solve(self,do_print=False):
         """ solve model continously """
 
-        pass    
+        par = self.par
+        sol = self.sol
+        opt = SimpleNamespace()
+    
+        # a. set bounds
+        bounds = [(0, 24), (0, 24), (0, 24), (0, 24)]
+
+        # b. find maximizing argument
+        res = minimize(lambda x: -self.calc_utility(*x), x0=[12, 12, 12, 12], bounds=bounds)
+    
+        opt.LM = res.x[0]
+        opt.HM = res.x[1]
+        opt.LF = res.x[2]
+        opt.HF = res.x[3]
+
+        # e. print
+        if do_print:
+            for k,v in opt.__dict__.items():
+                print(f'{k} = {v:6.4f}')
+
+        return opt, res
 
     def solve_wF_vec(self,discrete=False):
         """ solve model for vector of female wages """
