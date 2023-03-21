@@ -43,11 +43,14 @@ class HouseholdSpecializationModelClass:
         sol.beta0 = np.nan
         sol.beta1 = np.nan
 
+        #g. initial guess for allocation
+        par.guess = [7.1, 1.4, 1.5, 7.2]
+
     def calc_utility(self,LM,HM,LF,HF):
         """ calculate utility """
 
         par = self.par
-        sol = self.sol
+        sol = self.sol    
 
         # a. consumption of market goods
         C = par.wM*LM + par.wF*LF
@@ -113,26 +116,72 @@ class HouseholdSpecializationModelClass:
 
         return opt
 
-    def solve(self,do_print=False):
-        """ solve model continously """
+    def solve_continuous(self, do_print=False):
+        """ solve model continuously """
+    
+        par = self.par
+        sol = self.sol
+        opt = SimpleNamespace()
         
-        pass    
+        # a. set bounds
+        bounds = [(0, 24), (0, 24), (0, 24), (0, 24)]
+
+        # b. find maximizing argument
+        res = optimize.minimize(lambda x: -self.calc_utility(*x),method='SLSQP', x0=par.guess, bounds=bounds)
+        
+        opt.LM = res.x[0]
+        opt.HM = res.x[1]
+        opt.LF = res.x[2]
+        opt.HF = res.x[3]
+
+        # e. print
+        if do_print:
+            for k,v in opt.__dict__.items():
+                print(f'{k} = {v:6.4f}')
+
+        return opt
 
     def solve_wF_vec(self,discrete=False):
         """ solve model for vector of female wages """
-        if discrete == True: 
-            wF = self.par.wF_vec
-            it = len(wF)
-            Home_ratios = np.zeros(it)
-
+    
+        res = SimpleNamespace()
+        wF = self.par.wF_vec
+        it = len(wF)
+        Home_ratios = np.zeros(it)
+        LM = np.zeros(it)
+        HM = np.zeros(it)
+        LF = np.zeros(it)
+        HF = np.zeros(it)
+        if discrete == True:
             for it, val in enumerate(wF): 
                 self.par.wF = val
                 opt = self.solve_discrete()
-                Home_ratios[it] = opt.HF / opt.HM
-            
-            return Home_ratios
+                Home_ratios[it] = opt.HF / opt.HM ##Store the ratio
+                LM[it]= opt.LM #But also the individual values
+                HM[it]= opt.HM
+                LF[it]= opt.LF
+                HF[it]= opt.HF
+                res.Home_ratios = Home_ratios
+                res.LM = LM
+                res.HM = HM
+                res.LF = LF
+                res.HF = HF
+            return res
         else: 
-            pass
+            for it, val in enumerate(wF): 
+                self.par.wF = val
+                opt = self.solve_continuous()
+                Home_ratios[it] = opt.HF / opt.HM ##Store the ratio
+                LM[it]= opt.LM #But also the individual values
+                HM[it]= opt.HM
+                LF[it]= opt.LF
+                HF[it]= opt.HF
+                res.Home_ratios = Home_ratios
+                res.LM = LM
+                res.HM = HM
+                res.LF = LF
+                res.HF = HF
+            return res
     
 
     def run_regression(self):
