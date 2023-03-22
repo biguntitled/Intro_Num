@@ -123,9 +123,18 @@ class HouseholdSpecializationModelClass:
         # a. set bounds
         bounds = [(0, 24), (0, 24), (0, 24), (0, 24)]
 
+        def objective(x):
+            LM, HM, LF, HF = x
+            return -self.calc_utility(LM, HM, LF, HF)
+        
+        # Define the constraints
+        cons = [{'type': 'ineq', 'fun': lambda x: 24 - x[0] - x[1]}, 
+                {'type': 'ineq', 'fun': lambda x: 24 - x[2] - x[3]}]
+
         # b. find maximizing argument
-        res = minimize(lambda x: -self.calc_utility(*x), x0=[12, 12, 12, 12], bounds=bounds)
-    
+        #res = minimize(lambda x: -self.calc_utility(*x), x0=[12, 12, 12, 12], bounds=bounds)
+        #res = minimize(lambda x: -self.calc_utility(*x), method ="Nelder-Mead", bounds=bounds)
+        res = minimize(objective,x0=[12, 12, 12, 12], method ="Nelder-Mead", bounds=bounds)
         opt.LM = res.x[0]
         opt.HM = res.x[1]
         opt.LF = res.x[2]
@@ -136,7 +145,10 @@ class HouseholdSpecializationModelClass:
             for k,v in opt.__dict__.items():
                 print(f'{k} = {v:6.4f}')
 
-        return opt, res
+    
+         #result = (opt, res)
+         #print(result)
+        return opt
 
     def solve_wF_vec(self,discrete=False):
         """ solve model for vector of female wages """
