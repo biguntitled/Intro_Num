@@ -204,5 +204,16 @@ class HouseholdSpecializationModelClass:
     
     def estimate(self,alpha=None,sigma=None):
         """ estimate alpha and sigma """
-
+    
         pass
+
+    def objective_func(self, x):
+            self.par.alpha = x[0] 
+            self.par.sigma = x[1]
+            self.solve_wF_vec()
+            self.run_regression()
+            beta_0 = self.sol.beta0
+            beta_1 = self.sol.beta1
+            return (self.par.beta0_target - beta_0)**2 + (self.par.beta0_target - beta_1)**2   
+            
+       
