@@ -44,7 +44,7 @@ class HouseholdSpecializationModelClass:
         sol.beta1 = np.nan
 
         #g. initial guess for allocation
-        par.guess = [7.1, 1.4, 1.5, 7.2]
+        par.guess = [4.5, 4.5, 4.4, 4.4]
 
     def calc_utility(self,LM,HM,LF,HF):
         """ calculate utility """
@@ -64,7 +64,6 @@ class HouseholdSpecializationModelClass:
             power1 = (par.sigma-1)/par.sigma
             power2 = par.sigma/(par.sigma-1)
             H = ((1-par.alpha)*HM**(power1)+par.alpha*HF**(power1))**(power2)
-
 
         # c. total consumption utility
         Q = C**par.omega*H**(1-par.omega)
@@ -143,7 +142,7 @@ class HouseholdSpecializationModelClass:
 
     def solve_wF_vec(self,discrete=False):
         """ solve model for vector of female wages """
-    
+        sol = self.sol
         res = SimpleNamespace()
         wF = self.par.wF_vec
         it = len(wF)
@@ -166,6 +165,10 @@ class HouseholdSpecializationModelClass:
                 res.HM = HM
                 res.LF = LF
                 res.HF = HF
+                sol.LM_vec = LM #Store globally
+                sol.HM_vec = HM
+                sol.LF_vec = LF
+                sol.HF_vec = HF
             return res
         else: 
             for it, val in enumerate(wF): 
@@ -181,6 +184,10 @@ class HouseholdSpecializationModelClass:
                 res.HM = HM
                 res.LF = LF
                 res.HF = HF
+                sol.LM_vec = LM #Store globally
+                sol.HM_vec = HM
+                sol.LF_vec = LF
+                sol.HF_vec = HF
             return res
     
 
