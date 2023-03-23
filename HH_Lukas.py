@@ -174,21 +174,38 @@ class HouseholdSpecializationModelClass:
         A = np.vstack([np.ones(x.size),x]).T
         sol.beta0,sol.beta1 = np.linalg.lstsq(A,y,rcond=None)[0]
     
-    def estimate(self,alpha=None,sigma=None):
+    def estimate(self,alpha=None,sigma=None, extension=False):
         """ estimate alpha and sigma """
     
         sol = self.sol
         par=self.par
-
-        res = optimize.minimize(self.objective_func, [0.5,1], method="Nelder-Mead" )
+        bounds = [(0, 3), (0, 3)]
+        if extension == True: 
+            res = optimize.minimize(self.objective_func_ex, [0.5,1], method="Nelder-Mead" , bounds=bounds)
+        else: 
+            res = optimize.minimize(self.objective_func, [0.5,1], method="Nelder-Mead" , bounds=bounds)
         return res
+    
+
     def objective_func(self, x):
             self.par.alpha = x[0] 
             self.par.sigma = x[1]
+            self.par.omega = 0.5
+            self.par.wM = 1
             self.solve_wF_vec()
             self.run_regression()
             beta_0 = self.sol.beta0
             beta_1 = self.sol.beta1
             return (self.par.beta0_target - beta_0)**2 + (self.par.beta1_target - beta_1)**2   
-            
-       
+
+
+    def objective_func_ex(self, x): #Here we created another objective function for the Q5 where we vary omega, the weight on market goods.
+            self.par.alpha = 0.5 
+            self.par.sigma = x[1]
+            self.par.omega = x[0]
+            self.par.wM = 1.6
+            self.solve_wF_vec()
+            self.run_regression()
+            beta_0 = self.sol.beta0
+            beta_1 = self.sol.beta1
+            return (self.par.beta0_target - beta_0)**2 + (self.par.beta1_target - beta_1)**2  
