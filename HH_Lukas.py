@@ -39,12 +39,13 @@ class HouseholdSpecializationModelClass:
         sol.HM_vec = np.zeros(par.wF_vec.size)
         sol.LF_vec = np.zeros(par.wF_vec.size)
         sol.HF_vec = np.zeros(par.wF_vec.size)
+        sol.HF_HM_Ratio = np.zeros(par.wF_vec.size)
 
         sol.beta0 = np.nan
         sol.beta1 = np.nan
 
         #g. initial guess for allocation
-        par.guess = [4.5, 4.5, 4.4, 4.4]
+        par.guess = [4.5, 4.4, 4.37, 4.53]
 
     def calc_utility(self,LM,HM,LF,HF):
         """ calculate utility """
@@ -67,7 +68,7 @@ class HouseholdSpecializationModelClass:
 
         # c. total consumption utility
         Q = C**par.omega*H**(1-par.omega)
-        utility = np.fmax(Q,1e-8)**(1-par.rho)/(1-par.rho)
+        utility = np.fmax(Q,1e-4)**(1-par.rho)/(1-par.rho)
 
         # d. disutlity of work
         epsilon_ = 1+1/par.epsilon
@@ -126,7 +127,7 @@ class HouseholdSpecializationModelClass:
         bounds = [(0, 24), (0, 24), (0, 24), (0, 24)]
 
         # b. find maximizing argument
-        res = optimize.minimize(lambda x: -self.calc_utility(*x),method='SLSQP', x0=par.guess, bounds=bounds)
+        res = optimize.minimize(lambda x: -self.calc_utility(*x),method='Nelder-Mead', x0=par.guess, bounds=bounds)
         
         opt.LM = res.x[0]
         opt.HM = res.x[1]
@@ -143,52 +144,23 @@ class HouseholdSpecializationModelClass:
     def solve_wF_vec(self,discrete=False):
         """ solve model for vector of female wages """
         sol = self.sol
-        res = SimpleNamespace()
+        par = self.par
         wF = self.par.wF_vec
-        it = len(wF)
-        Home_ratios = np.zeros(it)
-        LM = np.zeros(it)
-        HM = np.zeros(it)
-        LF = np.zeros(it)
-        HF = np.zeros(it)
-        if discrete == True:
-            for it, val in enumerate(wF): 
-                self.par.wF = val
+    
+        for it, val in enumerate(wF): 
+            par.wF = val
+            if discrete == True:
                 opt = self.solve_discrete()
-                Home_ratios[it] = opt.HF / opt.HM ##Store the ratio
-                LM[it]= opt.LM #But also the individual values
-                HM[it]= opt.HM
-                LF[it]= opt.LF
-                HF[it]= opt.HF
-                res.Home_ratios = Home_ratios
-                res.LM = LM
-                res.HM = HM
-                res.LF = LF
-                res.HF = HF
-                sol.LM_vec = LM #Store globally
-                sol.HM_vec = HM
-                sol.LF_vec = LF
-                sol.HF_vec = HF
-            return res
-        else: 
-            for it, val in enumerate(wF): 
-                self.par.wF = val
+            else: 
                 opt = self.solve_continuous()
-                Home_ratios[it] = opt.HF / opt.HM ##Store the ratio
-                LM[it]= opt.LM #But also the individual values
-                HM[it]= opt.HM
-                LF[it]= opt.LF
-                HF[it]= opt.HF
-                res.Home_ratios = Home_ratios
-                res.LM = LM
-                res.HM = HM
-                res.LF = LF
-                res.HF = HF
-                sol.LM_vec = LM #Store globally
-                sol.HM_vec = HM
-                sol.LF_vec = LF
-                sol.HF_vec = HF
-            return res
+            
+            sol.LM_vec[it] = opt.LM #Store globally
+            sol.HM_vec[it] = opt.HM
+            sol.LF_vec[it] = opt.LF
+            sol.HF_vec[it] = opt.HF
+            sol.HF_HM_Ratio[it] = opt.HF/opt.HM
+    
+            
     
 
     def run_regression(self):
@@ -205,8 +177,11 @@ class HouseholdSpecializationModelClass:
     def estimate(self,alpha=None,sigma=None):
         """ estimate alpha and sigma """
     
-        pass
+        sol = self.sol
+        par=self.par
 
+        res = optimize.minimize(self.objective_func, [0.5,1], method="Nelder-Mead" )
+        return res
     def objective_func(self, x):
             self.par.alpha = x[0] 
             self.par.sigma = x[1]
@@ -214,6 +189,6 @@ class HouseholdSpecializationModelClass:
             self.run_regression()
             beta_0 = self.sol.beta0
             beta_1 = self.sol.beta1
-            return (self.par.beta0_target - beta_0)**2 + (self.par.beta0_target - beta_1)**2   
+            return (self.par.beta0_target - beta_0)**2 + (self.par.beta1_target - beta_1)**2   
             
        
