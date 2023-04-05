@@ -1,0 +1,31 @@
+xtf_id,Number,Name,Place,Web,BeginningOfOperation,x,y
+AG_1,1,Buchs (AG) GEKAL,Buchs,https://kva-buchs.ch/,1969,2650151,1248860
+AG_2,2,Oftringen ERZO,Oftringen,https://www.erzo.ch/,1974,2636701,1239200
+AG_3,3,Turgi,Turgi,https://www.kva.ch/home.html,1970,2662601,1259770
+BE_1,4,Bern Energiezentrale Forsthaus EWB,Bern,https://www.ewb.ch/,2012,2598147,1200068
+BE_2,5,Biel MÜVE,Biel-Bienne,https://www.mueve.ch/,1967,2586280,1218905
+BE_3,6,Thun AVAG,Thun,http://www.avag.ch/,2003,2612813,1178949
+BS_1,7,Basel IWB,Basel,https://www.iwb.ch/,1943,2609850,1269151
+FR_1,8,Posieux SAIDEF,Posieux,https://www.saidef.ch,2001,2575700,1180273
+GE_1,9,Les Cheneviers SIG,Genf,https://www.sig-ge.ch,1966,2491349,1116900
+GL_1,10,Niederurnen Linthgebiet,Niederurnen,https://www.kva-linthgebiet.ch/,1973,2721501,1221800
+GR_1,11,Trimmis GEVAG,Untervaz-Bahnhof,https://gevag.ch/,1975,2761301,1198300
+LU_2,13,Perlen Renergia,Perlen,https://www.renergia.ch/,2015,2671087,1218462
+NE_1,14,Colombier VADEC,Colombier,https://www.vadec.ch/,1971,2555100,1202500
+NE_2,15,La Chaux-de-Fonds VADEC,La Chaux-de-Fonds,https://www.vadec.ch/,1972,2554180,1217601
+SG_1,16,Bazenheid ZAB,Bazenheid,https://www.zab.ch/,1976,2722926,1253755
+SG_2,17,Buchs (SG) VfA,Buchs (SG),https://vfa-buchs.ch/,1960,2755001,1227000
+SG_3,18,St. Gallen,St. Gallen,https://www.stadt.sg.ch/,1972,2742841,1253305
+SO_1,19,Zuchwil Emmenspitz KEBAG,Zuchwil,https://www.kebag.ch/,1976,2609995,1229345
+TG_1,20,Weinfelden KVA Thurgau,Weinfelden,https://www.kvatg.ch/,1996,2727220,1268729
+TI_1,21,Giubiasco ACR,Giubiasco,https://www.aziendarifiuti.ch/,2009,2719817,1114618
+VD_2,22,Lausanne TRIDEL,Lausanne,http://www.tridel.ch/,2006,2539127,1153927
+VS_1,23,Gamsen KVA Oberwallis,Gamsen,https://www.abfall-oberwallis.ch/,1971,2638687,1127961
+VS_2,24,Sion UTO,Uvrier,http://www.utovs.ch/,1971,2598419,1121087
+VS_3,25,Monthey SATOM,Monthey,https://satomsa.ch/,1976,2563201,1125300
+ZH_1,26,Dietikon Limeco,Dietikon,https://www.limeco.ch/,1971,2672781,1252200
+ZH_2,27,Hinwil KEZO,Hinwil,http://www.kezo.ch/,1963,2704466,1240570
+ZH_3,28,Horgen,Horgen,https://zvho.ch/,1967,2688611,1233740
+ZH_4,29,Zürich Hagenholz ERZ,Zürich,https://www.erz.ch,1969,2685001,1252100
+ZH_5,30,Zürich Josefstrasse ERZ,Zürich,http://www.fernwaerme-zuerich.ch/,1904,2681808,1248996
+ZH_6,31,Winterthur Stadtwerk,Winterthur,https://stadtwerk.winterthur.ch/,1965,2698941,1261580

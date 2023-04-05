@@ -1,0 +1,19 @@
+﻿Catalogue_id,EnergySource_de,EnergySource_fr,EnergySource_it,EnergySource__en
+1,Heizöl,Mazout,Olio combustibile,Heating oil
+2,Erdgas,Gaz naturel,Gas naturale,Natural gas
+3,Erdgas BHKW,CCF gaz naturel,Impianto di cogenerazione (a gas naturale),Natural gas cogeneration plant
+4,Stückholz,Bûches,Legna in pezzi,Logs
+5,Holzschnitzel,Copeaux de bois,Cippato,Wood chips
+6,Pellets,Pellets,Pellet,Pellets
+7,Biogas,Biogaz,Biogas,Biogas
+8,Biogas BHKW,CCF biogaz,Impianto di cogenerazione (a biogas),Biogas cogeneration plant
+10,See- und Flusswasser (+WP),Eau de lac et rivière  (+ PAC),Acqua di lago e di fiume (+pompa di calore),Lake and river water (+HP)
+11,Grundwasser (+WP),Eau souterraine (+ PAC),Acqua di falda (+pompa di calore),Groundwater (+HP)
+12,Erdwärme (+WP),Géothermie (+ PAC),Calore geotermico (+pompa di calore),Geothermal heat (+HP)
+13,Luft (+WP),Air (+ PAC),Aria (+pompa di calore),Air (+HP)
+14,Industrielle und gewerbliche Abwärme,Rejets de chaleur industriels et commerciaux,Calore residuo industriale e commerciale,Industrial and commercial waste heat
+15,Abwasser (+WP),Eaux usées (+ PAC),Acque luride (+pompa di calore),Wastewater (+HP)
+16,Abwärme KVA,Rejets de chaleur UVTD ,Calore residuo IVTR ,Waste heat from municipal incinerator
+17,Abwärme Kernkraftwerk,Rejets de chaleur centrale nucléaire,Calore residuo centrale nucleare,Waste heat from nuclear power plant
+18,Abwärme Tunnel,Rejets de chaleur tunnel,Calore residuo galleria,Tunnel waste heat
+20,Solarthermie,Solaire thermique,Solare termico,Solar thermal

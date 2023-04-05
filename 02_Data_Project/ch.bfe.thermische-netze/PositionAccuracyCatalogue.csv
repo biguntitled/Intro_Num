@@ -1,0 +1,4 @@
+﻿Catalogue_id,PositionAccuracy_de,PositionAccuracy_fr,PositionAccuracy_it,PositionAccuracy_en
+101,Standort unklar,Emplacement très approximatif,Ubicazione non chiara,Location unspecified
+102,Standort einigermassen klar (Quartier),Emplacement approximatif (quartier),Ubicazione in linea di massima chiara (quartiere),Location specified approximately (district)
+103,Standort klar,Emplacement exact,Ubicazione chiara,Location specified
