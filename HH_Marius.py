@@ -1,10 +1,10 @@
 from types import SimpleNamespace
+
 import numpy as np
 from scipy import optimize
+
 import pandas as pd 
 import matplotlib.pyplot as plt
-
-
 
 class HouseholdSpecializationModelClass:
 
@@ -23,7 +23,7 @@ class HouseholdSpecializationModelClass:
 
         # c. household production
         par.alpha = 0.5
-        par.sigma = 1
+        par.sigma = 1.0
 
         # d. wages
         par.wM = 1.0
@@ -43,29 +43,17 @@ class HouseholdSpecializationModelClass:
         sol.beta0 = np.nan
         sol.beta1 = np.nan
 
-        #g. initial guess for allocation
-        #par.guess = [7.1, 1.4, 1.5, 7.2]
-        par.guess = [4.5, 4.5, 4.5, 4.5]
-        
     def calc_utility(self,LM,HM,LF,HF):
         """ calculate utility """
 
         par = self.par
-        sol = self.sol    
+        sol = self.sol
 
         # a. consumption of market goods
         C = par.wM*LM + par.wF*LF
 
         # b. home production
-        if np.isclose(par.sigma,0):
-            H = min(HF, HM)
-        elif np.isclose(par.sigma,1): 
-            H = HM**(1-par.alpha)*HF**par.alpha
-        else:
-            power1 = (par.sigma-1)/par.sigma
-            power2 = par.sigma/(par.sigma-1)
-            H = ((1-par.alpha)*HM**(power1)+par.alpha*HF**(power1))**(power2)
-
+        H = HM**(1-par.alpha)*HF**par.alpha
 
         # c. total consumption utility
         Q = C**par.omega*H**(1-par.omega)
@@ -117,83 +105,15 @@ class HouseholdSpecializationModelClass:
 
         return opt
 
-    def solve_continuous(self, do_print=False):
-        """ solve model continuously """
-    
-        par = self.par
-        sol = self.sol
-        opt = SimpleNamespace()
-        
-        # a. set bounds
-        bounds = [(0, 24), (0, 24), (0, 24), (0, 24)]
+    def solve(self,do_print=False):
+        """ solve model continously """
 
-        # b. find maximizing argument
-        res = optimize.minimize(lambda x: -self.calc_utility(*x),method='SLSQP', x0=par.guess, bounds=bounds)
-        
-        opt.LM = res.x[0]
-        opt.HM = res.x[1]
-        opt.LF = res.x[2]
-        opt.HF = res.x[3]
-
-        # e. print
-        if do_print:
-            for k,v in opt.__dict__.items():
-                print(f'{k} = {v:6.4f}')
-
-        return opt
+        pass    
 
     def solve_wF_vec(self,discrete=False):
         """ solve model for vector of female wages """
-        sol = self.sol
-        par = self.par
-        #res = SimpleNamespace()
-        #wF = self.par.wF_vec
-        #it = len(wF)
-        #Home_ratios = np.zeros(it)
-        #LM = np.zeros(it)
-        #HM = np.zeros(it)
-        #LF = np.zeros(it)
-        #HF = np.zeros(it)
-        
-        for it, val in enumerate(par.wF_vec): 
-            par.wF = val
-            if discrete == True:
-                opt = self.solve_discrete()
-            else:    
-                opt = self.solve_continuous()
-                
-            sol.LM_vec[it] = opt.LM
-            sol.LF_vec[it] = opt.LF
-            sol.HM_vec[it] = opt.HM
-            sol.HF_vec[it] = opt.HF
-            
-            #ome_ratios[it] = opt.HF / opt.HM ##Store the ratio
-            #M[it]= opt.LM #But also the individual values
-            #M[it]= opt.HM
-            #F[it]= opt.LF
-            #F[it]= opt.HF
-            #es.Home_ratios = Home_ratios
-            #es.LM = LM
-            #es.HM = HM
-            #es.LF = LF
-            #es.HF = HF
-    
-        #else: 
-        #    for it, val in enumerate(wF): 
-        #        self.par.wF = val
-        #        opt = self.solve_continuous()
-        #        Home_ratios[it] = opt.HF / opt.HM ##Store the ratio
-        #        LM[it]= opt.LM #But also the individual values
-        #        HM[it]= opt.HM
-        #        LF[it]= opt.LF
-        #        HF[it]= opt.HF
-        #        res.Home_ratios = Home_ratios
-        #        res.LM = LM
-        #        res.HM = HM
-        #        res.LF = LF
-        #        res.HF = HF
-        #    return res
-    #
+
+        pass
 
     def run_regression(self):
         """ run regression """
